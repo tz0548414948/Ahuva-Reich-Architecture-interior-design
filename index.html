@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" id="html-root">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="description"
+        content="אהובה רייך — אדריכלית ומעצבת פנים. תכנון אדריכלי, עיצוב פנים וליווי מלא של בתים פרטיים, דירות ופרויקטים בוטיק בירושלים ובמרכז, מהרעיון הראשון ועד למסירת המפתח."
+    >
+
+    <meta
+        name="keywords"
+        content="אדריכלית, אדריכלות, עיצוב פנים, מעצבת פנים, תכנון בתים פרטיים, שיפוץ דירות, אהובה רייך, אדריכלית ירושלים, מעצבת פנים ירושלים"
+    >
+
+    <meta name="author" content="אהובה רייך">
+
+    <meta
+        name="theme-color"
+        content="#FDFDF1"
+    >
+
+    <!-- Open Graph / social share preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="אהובה רייך | אדריכלות ועיצוב פנים">
+    <meta property="og:title" content="אהובה רייך | אדריכלות ועיצוב פנים">
+    <meta property="og:description" content="תכנון אדריכלי, עיצוב פנים וליווי מלא של בתים פרטיים ודירות, מהרעיון הראשון ועד לבית המושלם.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:locale" content="he_IL">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="אהובה רייך | אדריכלות ועיצוב פנים">
+    <meta name="twitter:description" content="תכנון אדריכלי, עיצוב פנים וליווי מלא של בתים פרטיים ודירות.">
+    <meta name="twitter:image" content="logo.png">
+
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <title>אהובה רייך | אדריכלית ומעצבת פנים</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Heebo:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Structured data — helps Google understand this is a local
+         architecture/interior-design business (for search results,
+         and potentially Google Business/Maps if linked later). -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "אהובה רייך - אדריכלות ועיצוב פנים",
+        "description": "אדריכלית ומעצבת פנים — תכנון אדריכלי, עיצוב פנים וליווי מלא של בתים פרטיים ודירות בירושלים ובמרכז.",
+        "image": "logo.png",
+        "areaServed": ["ירושלים", "מרכז הארץ"],
+        "priceRange": "$$",
+        "sameAs": [
+            "https://www.instagram.com/ahuva.reich.design/",
+            "https://www.pinterest.com/ahuvareichdesign/"
+        ]
+    }
+    </script>
+</head>
+
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="site-header">
+
+    <div class="header-inner container">
+
+        <!-- Logo -->
+        <a
+            href="#top"
+            class="brand"
+            aria-label="אהובה רייך - עיצוב פנים"
+        >
+            <img
+                src="logo.png"
+                alt="אהובה רייך - עיצוב פנים"
+                class="brand-logo"
+            >
+        </a>
+
+
+        <!-- Desktop navigation -->
+        <nav
+            class="desktop-nav"
+            aria-label="ניווט ראשי"
+        >
+            <a href="#top" class="nav-link active" data-i18n="nav.home">ראשי</a>
+            <a href="#about" class="nav-link" data-i18n="nav.about">אודות</a>
+            <a href="#services" class="nav-link" data-i18n="nav.services">שירותים</a>
+            <a href="#projects" class="nav-link" data-i18n="nav.projects">פרויקטים</a>
+            <a href="#contact" class="nav-link" data-i18n="nav.contact">צור קשר</a>
+        </nav>
+
+
+        <!-- Language toggle -->
+        <button
+            type="button"
+            class="lang-toggle"
+            id="lang-toggle"
+            aria-label="Switch language / החלפת שפה"
+        >
+            <span data-i18n="lang.toggle">EN</span>
+        </button>
+
+
+        <!-- WhatsApp -->
+        <a
+            href="https://wa.me/972555501276"
+            class="header-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            WhatsApp
+        </a>
+
+
+        <!-- Mobile menu button -->
+        <button
+            class="menu-toggle"
+            type="button"
+            aria-label="פתיחת תפריט"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+
+    <!-- Mobile navigation -->
+    <nav
+        class="mobile-menu"
+        id="mobile-menu"
+        aria-label="ניווט בנייד"
+    >
+        <a href="#top" data-i18n="nav.home">ראשי</a>
+        <a href="#about" data-i18n="nav.about">אודות</a>
+        <a href="#services" data-i18n="nav.services">שירותים</a>
+        <a href="#projects" data-i18n="nav.projects">פרויקטים</a>
+        <a href="#contact" data-i18n="nav.contact">צור קשר</a>
+
+        <button
+            type="button"
+            class="lang-toggle-mobile"
+            id="lang-toggle-mobile"
+        >
+            <span data-i18n="lang.toggle">EN</span>
+        </button>
+
+        <a
+            href="https://wa.me/972555501276"
+            class="mobile-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            WhatsApp
+        </a>
+    </nav>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero" id="top">
+
+    <div class="hero-image">
+        <div class="hero-image-inner"></div>
+    </div>
+
+
+    <div class="hero-content">
+
+        <div class="hero-eyebrow" data-i18n="hero.eyebrow">
+            אדריכלות · עיצוב פנים · ליווי
+        </div>
+
+        <h1 data-i18n-html="hero.title">
+            הבית שלכם.
+            <br>
+            בדיוק כמו
+            <span>שדמיינתם.</span>
+        </h1>
+
+        <p data-i18n="hero.text">
+            תכנון ועיצוב פנים בהתאמה אישית,
+            מהרעיון הראשון ועד לפרטים הקטנים.
+        </p>
+
+        <div class="hero-actions">
+
+            <a
+                href="#projects"
+                class="button button-primary"
+                data-i18n="hero.cta1"
+            >
+                לפרויקטים
+            </a>
+
+            <a
+                href="#contact"
+                class="button button-outline"
+                data-i18n="hero.cta2"
+            >
+                בואו נדבר
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INTRO
+========================================================= -->
+
+<section class="intro section">
+
+    <div class="container intro-grid">
+
+        <div class="section-label" data-i18n="intro.label">
+            01 / מי אנחנו
+        </div>
+
+
+        <div class="intro-content">
+
+            <h2 data-i18n-html="intro.title">
+                עיצוב שנולד
+                <em>מתוך החיים עצמם.</em>
+            </h2>
+
+            <p data-i18n="intro.text">
+                כל בית מספר סיפור אחר.
+                התפקיד שלי הוא להבין את האנשים שחיים בו,
+                את הצרכים שלהם ואת הדרך שבה הם רוצים לחיות —
+                ולתרגם את כל אלה לחלל מדויק, נעים ומיוחד.
+            </p>
+
+            <a
+                href="#about"
+                class="text-link"
+            >
+                <span data-i18n="intro.link">להכיר אותי</span>
+                <span>←</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SERVICES
+========================================================= -->
+
+<section
+    class="services section"
+    id="services"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label" data-i18n="services.label">
+                02 / השירותים
+            </div>
+
+            <div class="section-heading-content">
+
+                <h2 data-i18n-html="services.title">
+                    מתכנון ראשוני
+                    <br>
+                    ועד לבית המושלם.
+                </h2>
+
+                <p data-i18n="services.text">
+                    ליווי אישי ומקצועי לאורך כל הדרך.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="services-grid">
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    01
+                </span>
+
+                <h3 data-i18n="services.s1.title">
+                    עיצוב פנים
+                </h3>
+
+                <p data-i18n="services.s1.text">
+                    יצירת שפה עיצובית שלמה,
+                    בחירת חומרים, צבעים, תאורה,
+                    ריהוט ופרטים משלימים.
+                </p>
+
+            </article>
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    02
+                </span>
+
+                <h3 data-i18n="services.s2.title">
+                    תכנון הבית
+                </h3>
+
+                <p data-i18n="services.s2.text">
+                    תכנון נכון של החלל,
+                    חלוקת חדרים, זרימה,
+                    פונקציונליות והתאמה לאורח החיים.
+                </p>
+
+            </article>
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    03
+                </span>
+
+                <h3 data-i18n="services.s3.title">
+                    ליווי שיפוץ
+                </h3>
+
+                <p data-i18n="services.s3.text">
+                    ליווי מקצועי לאורך הביצוע,
+                    עבודה מול בעלי מקצוע,
+                    בחירת חומרים וקבלת החלטות.
+                </p>
+
+            </article>
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    04
+                </span>
+
+                <h3 data-i18n="services.s4.title">
+                    פרויקטים פרטיים
+                </h3>
+
+                <p data-i18n="services.s4.text">
+                    תכנון ועיצוב של בתים פרטיים
+                    ודירות, בהתאמה מלאה
+                    לאנשים ולתקציב.
+                </p>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<section
+    class="about section"
+    id="about"
+>
+
+    <div class="container about-grid">
+
+        <div class="about-image">
+
+            <div class="image-frame"></div>
+
+            <div class="about-badge">
+    <img src="images/about-image.jpg" alt="Ahuva Reich Interior Design">
+</div>
+
+        </div>
+
+
+        <div class="about-content">
+
+            <div class="section-label" data-i18n="about.label">
+                03 / אודות
+            </div>
+
+            <h2 data-i18n-html="about.title">
+                תכנון מדויק.
+                <br>
+                עיצוב עם אופי.
+            </h2>
+
+            <p data-i18n="about.text1">
+                אני אהובה רייך, אדריכלית ומעצבת פנים
+                המתמחה בתכנון ועיצוב בתים פרטיים ודירות.
+            </p>
+
+            <p data-i18n="about.text2">
+                התהליך שלי מתחיל בהקשבה.
+                אני מאמינה שעיצוב טוב לא צריך רק
+                להיראות יפה — הוא צריך לעבוד עבורכם
+                בכל יום מחדש.
+            </p>
+
+
+            <div class="about-details">
+
+                <div>
+                    <strong data-i18n="about.d1.label">
+                        אזור פעילות
+                    </strong>
+
+                    <span data-i18n="about.d1.value">
+                        ירושלים והמרכז
+                    </span>
+                </div>
+
+
+                <div>
+                    <strong data-i18n="about.d2.label">
+                        התמחות
+                    </strong>
+
+                    <span data-i18n="about.d2.value">
+                        בתים פרטיים ודירות
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PROJECTS
+========================================================= -->
+
+<section
+    class="projects section"
+    id="projects"
+>
+
+    <div class="container">
+
+        <div class="section-heading projects-heading">
+
+            <div class="section-label" data-i18n="projects.label">
+                04 / פרויקטים
+            </div>
+
+            <div class="section-heading-content">
+
+                <h2 data-i18n-html="projects.title">
+                    חללים עם
+                    <br>
+                    אופי משלהם.
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!--
+            The cards below are rendered by script.js from the
+            project list in projects-data.js — that one file is the
+            single source of truth for every image, tag and title.
+            To add, remove, reorder or swap a project's photo, only
+            projects-data.js needs to change; nothing here does.
+        -->
+        <div class="projects-carousel">
+
+            <div
+                class="projects-track"
+                id="projects-track"
+                role="region"
+                aria-label="פרויקטים"
+            ></div>
+
+            <button
+                type="button"
+                class="carousel-nav carousel-prev"
+                id="carousel-prev"
+                aria-label="הפרויקט הקודם"
+            >‹</button>
+
+            <button
+                type="button"
+                class="carousel-nav carousel-next"
+                id="carousel-next"
+                aria-label="הפרויקט הבא"
+            >›</button>
+
+        </div>
+
+        <div class="carousel-dots" id="carousel-dots"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PROCESS
+========================================================= -->
+
+<section class="process section">
+
+    <div class="container">
+
+        <div class="process-header">
+
+            <div class="section-label" data-i18n="process.label">
+                05 / התהליך
+            </div>
+
+            <h2 data-i18n-html="process.title">
+                פשוט. ברור.
+                <br>
+                אישי.
+            </h2>
+
+        </div>
+
+
+        <div class="process-timeline">
+
+
+            <div class="timeline-step">
+
+                <div class="timeline-marker">01</div>
+
+                <h3 data-i18n="process.s1.title">
+                    פגישת היכרות
+                </h3>
+
+                <p data-i18n="process.s1.text">
+                    מבינים את הצרכים,
+                    הרצונות והחזון.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-step">
+
+                <div class="timeline-marker">02</div>
+
+                <h3 data-i18n="process.s2.title">
+                    גיבוש קונספט
+                </h3>
+
+                <p data-i18n="process.s2.text">
+                    מגבשים קונספט,
+                    תוכניות וחומרים.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-step">
+
+                <div class="timeline-marker">03</div>
+
+                <h3 data-i18n="process.s3.title">
+                    פיתוח עיצובי
+                </h3>
+
+                <p data-i18n="process.s3.text">
+                    בונים שפה עיצובית
+                    מדויקת והרמונית.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-step">
+
+                <div class="timeline-marker">04</div>
+
+                <h3 data-i18n="process.s4.title">
+                    ליווי ביצוע
+                </h3>
+
+                <p data-i18n="process.s4.text">
+                    ממשיכים יחד עד
+                    שהבית מוכן.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
+<section
+    class="contact section"
+    id="contact"
+>
+
+    <div class="contact-background"></div>
+
+    <div class="contact-overlay"></div>
+
+
+    <div class="container contact-inner">
+
+        <div class="section-label" data-i18n="contact.label">
+            06 / מתחילים
+        </div>
+
+        <h2 data-i18n-html="contact.title">
+            יש לכם בית
+            <br>
+            <em>לדמיין?</em>
+        </h2>
+
+        <p data-i18n="contact.text">
+            אשמח לשמוע על הפרויקט שלכם
+            ולבדוק יחד איך אפשר להפוך את הרעיון
+            לבית שאתם באמת רוצים לחיות בו.
+        </p>
+
+
+        <a
+            href="https://wa.me/972555501276"
+            class="contact-button"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <span data-i18n="contact.cta">
+                בואו נדבר ב־WhatsApp
+            </span>
+
+            <strong>
+                ←
+            </strong>
+        </a>
+
+
+        <a
+            href="mailto:Ahuvareichdesign@gmail.com"
+            class="contact-email"
+        >
+            <span data-i18n="contact.email.label">או כתבו לי במייל:</span>
+            <span class="contact-email-address">Ahuvareichdesign@gmail.com</span>
+        </a>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+
+        <div class="footer-brand">
+
+            <img
+                src="logo.png"
+                alt="אהובה רייך"
+            >
+
+            <p data-i18n="footer.tagline">
+                עיצוב פנים · תכנון · ליווי
+            </p>
+
+        </div>
+
+
+        <nav
+            class="footer-nav"
+            aria-label="ניווט תחתון"
+        >
+
+            <a href="#top" data-i18n="nav.home">
+                ראשי
+            </a>
+
+            <a href="#about" data-i18n="nav.about">
+                אודות
+            </a>
+
+            <a href="#services" data-i18n="nav.services">
+                שירותים
+            </a>
+
+            <a href="#projects" data-i18n="nav.projects">
+                פרויקטים
+            </a>
+
+            <a href="#contact" data-i18n="nav.contact">
+                צור קשר
+            </a>
+
+        </nav>
+
+
+        <div class="footer-contact">
+
+            <span data-i18n="about.d1.value">
+                ירושלים והמרכז
+            </span>
+
+            <a
+                href="https://wa.me/972555501276"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                WhatsApp
+            </a>
+
+            <div class="footer-social">
+
+                <a
+                    href="https://www.instagram.com/ahuva.reich.design/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                >
+                    <img src="images/social-instagram.png" alt="Instagram">
+                </a>
+
+                <a
+                    href="https://www.pinterest.com/ahuvareichdesign/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Pinterest"
+                >
+                    <img src="images/social-pinterest.png" alt="Pinterest">
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 Ahuva Reich Interior Design
+        </span>
+
+        <span data-i18n="footer.rights">
+            כל הזכויות שמורות
+        </span>
+
+    </div>
+
+</footer>
+
+
+<script src="projects-data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
