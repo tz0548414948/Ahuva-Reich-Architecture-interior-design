@@ -848,28 +848,16 @@ img {
 }
 
 .about-badge {
-    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 120px;
+    height: 120px;
+}
 
-    z-index: 3;
-
-    right: 30px;
-    bottom: 30px;
-
-    width: 145px;
-    height: 145px;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    background: var(--cream);
-
-    color: var(--bronze-dark);
-
-    box-shadow:
-        0 15px 40px rgba(40, 30, 20, 0.12);
+.about-badge img {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
 }
 
 .about-badge strong {
