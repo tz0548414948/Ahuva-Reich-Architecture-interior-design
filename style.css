@@ -795,91 +795,67 @@ img {
    ABOUT
 ===================================================== */
 
-.about {
-    padding: 120px 0;
+.about-badge{ 
+   position: absolute; 
+   z-index: 3; 
+   right: 30px; 
+   bottom: 30px; 
+   width: 145px; 
+   height: 145px; 
+   display: flex; 
+   flex-direction: column; 
+   align-items: center; 
+   justify-content: center; 
+   background: var(--cream); 
+   color: var(--bronze-dark); 
+   box-shadow: 0 15px 40px rgba(40, 30, 20, 0.12); 
+} 
+.about-badge strong { 
+   color: var(--bronze); 
+   font-family: Georgia, serif; 
+   font-size: 40px; 
+   font-weight: 400; 
+} 
+.about-badge span { 
+   font-size: 10px; 
+   letter-spacing: 1px; 
+   text-transform: uppercase; 
+} 
+.about-content h2 { 
+   margin: 24px 0 32px; 
+   font-size: clamp( 44px, 5vw, 72px ); 
+   font-weight: 500; 
+   line-height: 1.1; 
+   letter-spacing: -0.3px; 
 }
-
-.about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 90px;
-    align-items: center;
+.about-content > p { 
+   max-width: 540px; 
+   margin-bottom: 18px; 
+   color: var(--muted); 
+   font-size: 18px; 
+   line-height: 1.9; 
+} 
+.about-details { 
+   display: grid; 
+   grid-template-columns: 1fr 1fr; 
+   gap: 30px; 
+   margin-top: 40px; 
+   padding-top: 25px; 
+   border-top: 1px solid var(--cream-dark); 
 }
-
-
-/* =====================================================
-   ABOUT IMAGE
-===================================================== */
-
-.about-image {
-    position: relative;
-    width: 100%;
+.about-details div {
+   display: flex; 
+   flex-direction: column; 
+   gap: 4px;
 }
-
-
-/* Main image / frame */
-
-.image-frame {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-
-    background:
-        url("about.jpg")
-        center / cover
-        no-repeat;
-
-    position: relative;
+.about-details strong { 
+   color: var(--bronze-dark); 
+   font-size: 13px; 
 }
-
-
-/* =====================================================
-   LOGO BADGE
-===================================================== */
-
-.about-badge {
-    position: absolute;
-
-    z-index: 3;
-
-    right: 24px;
-    bottom: 24px;
-
-    width: 135px;
-    height: 135px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--cream);
-
-    overflow: hidden;
-
-    box-shadow:
-        0 15px 40px rgba(40, 30, 20, 0.12);
+.about-details span { 
+   color: var(--muted);
+   font-size: 15px;
 }
-
-
-/* Logo itself */
-
-.about-badge img {
-    display: block;
-
-    width: 82%;
-    height: 82%;
-
-    max-width: 100%;
-    max-height: 100%;
-
-    object-fit: contain;
-
-    object-position: center;
-
-    margin: 0;
-    padding: 0;
-}
-
-
 /* =====================================================
    ABOUT CONTENT
 ===================================================== */
