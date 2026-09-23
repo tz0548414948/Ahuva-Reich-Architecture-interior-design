@@ -794,7 +794,41 @@ img {
 /* =====================================================
    ABOUT
 ===================================================== */
+.about {
+    background: var(--cream);
+}
 
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 110px;
+    align-items: center;
+}
+
+.about-image {
+    position: relative;
+    min-height: 650px;
+}
+
+.image-frame {
+    position: absolute;
+    inset: 0;
+    background-image: url("images/image2.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.about-image::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 25px;
+    right: 25px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--bronze);
+    pointer-events: none;
+}
 .about-badge {
     position: absolute;
     z-index: 3;
@@ -829,41 +863,7 @@ img {
    letter-spacing: 1px; 
    text-transform: uppercase; 
 } 
-.about-content h2 { 
-   margin: 24px 0 32px; 
-   font-size: clamp( 44px, 5vw, 72px ); 
-   font-weight: 500; 
-   line-height: 1.1; 
-   letter-spacing: -0.3px; 
-}
-.about-content > p { 
-   max-width: 540px; 
-   margin-bottom: 18px; 
-   color: var(--muted); 
-   font-size: 18px; 
-   line-height: 1.9; 
-} 
-.about-details { 
-   display: grid; 
-   grid-template-columns: 1fr 1fr; 
-   gap: 30px; 
-   margin-top: 40px; 
-   padding-top: 25px; 
-   border-top: 1px solid var(--cream-dark); 
-}
-.about-details div {
-   display: flex; 
-   flex-direction: column; 
-   gap: 4px;
-}
-.about-details strong { 
-   color: var(--bronze-dark); 
-   font-size: 13px; 
-}
-.about-details span { 
-   color: var(--muted);
-   font-size: 15px;
-}
+
 /* =====================================================
    ABOUT CONTENT
 ===================================================== */
