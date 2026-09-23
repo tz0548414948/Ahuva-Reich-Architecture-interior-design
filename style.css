@@ -792,90 +792,172 @@ img {
 }
 
 
-/* =========================================================
+```html
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section class="about" id="about">
+
+    <div class="container about-grid">
+
+        <!-- IMAGE -->
+        <div class="about-image">
+
+            <div class="image-frame"></div>
+
+            <!-- LOGO BADGE -->
+            <div class="about-badge">
+                <img
+                    src="logo.png"
+                    alt="Ahuva Reich Interior Design"
+                >
+            </div>
+
+        </div>
+
+
+        <!-- CONTENT -->
+        <div class="about-content">
+
+            <span class="section-label">
+                About
+            </span>
+
+            <h2>
+                Creating spaces<br>
+                with meaning.
+            </h2>
+
+            <p>
+                Ahuva Reich specializes in interior design
+                for private homes and apartments, creating
+                elegant, functional and timeless spaces
+                tailored to the people who live in them.
+            </p>
+
+            <p>
+                From the initial concept and planning to
+                the smallest finishing details, every project
+                is designed with precision, balance and
+                attention to the character of the space.
+            </p>
+
+
+            <div class="about-details">
+
+                <div>
+                    <strong>LOCATION</strong>
+                    <span>Jerusalem & Center</span>
+                </div>
+
+                <div>
+                    <strong>SPECIALIZATION</strong>
+                    <span>Interior Design</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+```css
+/* =====================================================
    ABOUT
-========================================================= */
+===================================================== */
 
 .about {
-    background: var(--cream);
+    padding: 120px 0;
 }
 
 .about-grid {
     display: grid;
-
-    grid-template-columns:
-        1.1fr 1fr;
-
-    gap: 110px;
-
+    grid-template-columns: 1fr 1fr;
+    gap: 90px;
     align-items: center;
 }
 
+
+/* =====================================================
+   ABOUT IMAGE
+===================================================== */
+
 .about-image {
     position: relative;
-
-    min-height: 650px;
+    width: 100%;
 }
+
+
+/* Main image / frame */
 
 .image-frame {
-    position: absolute;
-
-    inset: 0;
-
-    background-image:
-        url("images/image2.jpg");
-
-    background-size: cover;
-    background-position: center;
-}
-
-.about-image::before {
-    content: "";
-
-    position: absolute;
-
-    z-index: 2;
-
-    top: 25px;
-    right: 25px;
-
     width: 100%;
-    height: 100%;
+    aspect-ratio: 4 / 5;
 
-    border: 1px solid var(--bronze);
+    background:
+        url("about.jpg")
+        center / cover
+        no-repeat;
 
-    pointer-events: none;
+    position: relative;
 }
+
+
+/* =====================================================
+   LOGO BADGE
+===================================================== */
 
 .about-badge {
-    right: 20px;
-    bottom: 20px;
-    width: 120px;
-    height: 120px;
+    position: absolute;
+
+    z-index: 3;
+
+    right: 24px;
+    bottom: 24px;
+
+    width: 135px;
+    height: 135px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--cream);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 15px 40px rgba(40, 30, 20, 0.12);
 }
+
+
+/* Logo itself */
 
 .about-badge img {
-    width: 85%;
-    height: 85%;
+    display: block;
+
+    width: 82%;
+    height: 82%;
+
+    max-width: 100%;
+    max-height: 100%;
+
     object-fit: contain;
+
+    object-position: center;
+
+    margin: 0;
+    padding: 0;
 }
 
-.about-badge strong {
-    color: var(--bronze);
 
-    font-family: Georgia, serif;
-
-    font-size: 40px;
-    font-weight: 400;
-}
-
-.about-badge span {
-    font-size: 10px;
-
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
-}
+/* =====================================================
+   ABOUT CONTENT
+===================================================== */
 
 .about-content h2 {
     margin:
@@ -894,6 +976,7 @@ img {
     letter-spacing: -0.3px;
 }
 
+
 .about-content > p {
     max-width: 540px;
 
@@ -906,6 +989,11 @@ img {
     line-height: 1.9;
 }
 
+
+/* =====================================================
+   ABOUT DETAILS
+===================================================== */
+
 .about-details {
     display: grid;
 
@@ -915,24 +1003,29 @@ img {
     gap: 30px;
 
     margin-top: 40px;
+
     padding-top: 25px;
 
     border-top:
         1px solid var(--cream-dark);
 }
 
+
 .about-details div {
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
 }
+
 
 .about-details strong {
     color: var(--bronze-dark);
 
     font-size: 13px;
 }
+
 
 .about-details span {
     color: var(--muted);
@@ -941,6 +1034,45 @@ img {
 }
 
 
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .about {
+        padding: 80px 0;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+
+        gap: 50px;
+    }
+
+    .about-badge {
+        right: 16px;
+        bottom: 16px;
+
+        width: 105px;
+        height: 105px;
+    }
+
+    .about-badge img {
+        width: 80%;
+        height: 80%;
+    }
+
+    .about-content h2 {
+        font-size: 44px;
+    }
+
+    .about-details {
+        gap: 20px;
+    }
+
+}
+```
 /* =========================================================
    PROJECTS
 ========================================================= */
