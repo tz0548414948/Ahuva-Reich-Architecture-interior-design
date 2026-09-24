@@ -542,30 +542,27 @@ async function loadProjectsFromSheet() {
 function testimonialsFromCSV(text) {
 
     const rows = parseCSV(text);
-    if (!rows.length) return null;
+    if (rows.length < 2) return null;
 
+    /* לא מסתמכים על שם הכותרת בשורה 1 — גוגל פורמס מאפס אותה
+       בחזרה לטקסט השאלה בכל פעם שהטופס מתעדכן. מסתמכים על
+       המיקום הקבוע: A=חותמת זמן, B=שם, C=תוכן, D=דירוג, E=approved */
     const header = rows[0].map(h => h.trim().toLowerCase());
-    const idx = {
-        name: header.indexOf("name"),
-        text: header.indexOf("text"),
-        rating: header.indexOf("rating"),
-        approved: header.indexOf("approved")
-    };
-    if (idx.name === -1 || idx.text === -1) return null;
+    const approvedIdx = header.indexOf("approved") !== -1 ? header.indexOf("approved") : 4;
 
     const list = [];
     for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
         if (!row || row.every(cell => !cell || !cell.trim())) continue;
 
-        const approvedRaw = idx.approved !== -1 ? (row[idx.approved] || "").trim().toLowerCase() : "";
+        const approvedRaw = (row[approvedIdx] || "").trim().toLowerCase();
         if (!["כן", "yes", "true", "1"].includes(approvedRaw)) continue;
 
-        const name = (row[idx.name] || "").trim();
-        const text = (row[idx.text] || "").trim();
+        const name = (row[1] || "").trim();
+        const text = (row[2] || "").trim();
         if (!name || !text) continue;
 
-        let rating = idx.rating !== -1 ? parseInt(row[idx.rating], 10) : 0;
+        let rating = parseInt(row[3], 10);
         if (!Number.isFinite(rating)) rating = 0;
         rating = Math.max(0, Math.min(5, rating));
 
