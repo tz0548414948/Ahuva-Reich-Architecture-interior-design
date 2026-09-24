@@ -539,6 +539,95 @@ async function loadProjectsFromSheet() {
     }
 
 }
+function testimonialsFromCSV(text) {
+
+    const rows = parseCSV(text);
+    if (!rows.length) return null;
+
+    const header = rows[0].map(h => h.trim().toLowerCase());
+    const idx = {
+        name: header.indexOf("name"),
+        text: header.indexOf("text"),
+        rating: header.indexOf("rating"),
+        approved: header.indexOf("approved")
+    };
+    if (idx.name === -1 || idx.text === -1) return null;
+
+    const list = [];
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || row.every(cell => !cell || !cell.trim())) continue;
+
+        const approvedRaw = idx.approved !== -1 ? (row[idx.approved] || "").trim().toLowerCase() : "";
+        if (!["כן", "yes", "true", "1"].includes(approvedRaw)) continue;
+
+        const name = (row[idx.name] || "").trim();
+        const text = (row[idx.text] || "").trim();
+        if (!name || !text) continue;
+
+        let rating = idx.rating !== -1 ? parseInt(row[idx.rating], 10) : 0;
+        if (!Number.isFinite(rating)) rating = 0;
+        rating = Math.max(0, Math.min(5, rating));
+
+        list.push({ name, text, rating });
+    }
+    return list;
+
+}
+
+async function loadTestimonialsFromSheet() {
+
+    const url = window.TESTIMONIALS_SHEET_CSV_URL;
+    if (!url || typeof url !== "string" || url.trim() === "") {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+        }
+
+        const parsed = testimonialsFromCSV(await response.text());
+
+        if (parsed && parsed.length > 0) {
+            window.TESTIMONIALS_DATA = parsed;
+            renderTestimonials();
+        }
+
+    } catch (err) {
+        console.warn("Could not load testimonials from the Google Sheet.", err);
+    }
+
+}
+
+function renderTestimonials() {
+
+    const grid = document.getElementById("testimonialsGrid");
+    if (!grid) return;
+
+    const section = grid.closest(".testimonials");
+    const list = window.TESTIMONIALS_DATA || [];
+
+    if (!list.length) {
+        if (section) section.style.display = "none";
+        return;
+    }
+    if (section) section.style.display = "";
+
+    grid.innerHTML = list.map(t => {
+        const stars = "★".repeat(t.rating) + "☆".repeat(5 - t.rating);
+        return `
+            <div class="testimonial-card">
+                ${t.rating ? `<div class="testimonial-stars">${stars}</div>` : ""}
+                <p class="testimonial-text">"${escapeHTML(t.text)}"</p>
+                <strong class="testimonial-name">${escapeHTML(t.name)}</strong>
+            </div>
+        `;
+    }).join("");
+
+}
 
 function getCardStep() {
 
