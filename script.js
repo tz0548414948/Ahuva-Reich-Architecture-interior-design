@@ -598,6 +598,8 @@ if (projectsTrack) {
     loadProjectsFromSheet().then(() => {
         renderProjects(currentLang);
     });
+   renderTestimonials();
+loadTestimonialsFromSheet();
 
     if (carouselPrev) {
 
