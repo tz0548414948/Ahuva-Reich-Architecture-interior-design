@@ -138,3 +138,6 @@ window.PROJECTS_DATA = [
     */
 
 ];
+/* קישור ה-CSV שפורסם מהגיליון של הטופס. ריק = אין המלצות עדיין. */
+window.TESTIMONIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPu67kK2r0bVpx8Pt4ydTVy3xayrf8RonBRYeyS8VAbr6l08wY_hNpxCD45wDRnOVW6najYfmLuVr2/pub?output=csv";
+window.TESTIMONIALS_DATA = [];
