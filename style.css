@@ -1267,7 +1267,51 @@ img {
     background: var(--bronze-soft);
 }
 
+/* =========================================================
+   TESTIMONIALS
+========================================================= */
 
+.testimonials {
+    background: var(--cream-soft);
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.testimonial-card {
+    padding: 40px 32px;
+    background: var(--white);
+    border: 1px solid var(--border);
+}
+
+.testimonial-stars {
+    margin-bottom: 18px;
+    color: var(--bronze);
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.testimonial-text {
+    margin-bottom: 22px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.testimonial-name {
+    color: var(--bronze-dark);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+}
 /* =========================================================
    PROCESS
 ========================================================= */
