@@ -878,8 +878,10 @@ const translations = {
     "contact.email.label": { en: "Or email me at:" },
 
     "footer.tagline": { en: "Interior Design · Planning · Guidance" },
-    "footer.rights": { en: "All rights reserved" }
+   "footer.rights": { en: "All rights reserved" },
 
+"testimonials.label": { en: "Testimonials" },
+"testimonials.title": { en: "In Their Own Words" }
 };
 
 const PAGE_META = {
