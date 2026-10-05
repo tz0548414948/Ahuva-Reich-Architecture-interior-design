@@ -363,10 +363,15 @@ function initGalleryAutoplay() {
 
 }
 
-/* "קצת מהעבודות שלי": the first 3 projects, first photo of each.
+/* "קצת מהעבודות שלי": up to 6 real photos on the home page. Photos
+   are taken round-robin (1st photo of every project, then 2nd of
+   every project, ...) so every project is represented before any one
+   repeats. A project's tag/title is shown only on its first photo.
    Same safety rules as the carousel — text through escapeHTML, photo
-   URLs through isSafeImageURL, and the URL is applied via the style
-   property (data-src is read back), never built into markup. */
+   URLs through isSafeImageURL (inside projectPhotos), and the URL is
+   applied via the style property, never built into markup. */
+const WORKS_MAX = 6;
+
 function renderWorks(lang) {
 
     const grid = document.getElementById("works-grid");
@@ -377,11 +382,17 @@ function renderWorks(lang) {
 
     const section = grid.closest(".works");
     const list = Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : [];
+    const galleries = list.map(project => ({ project, photos: projectPhotos(project) }));
+    const longest = galleries.reduce((max, g) => Math.max(max, g.photos.length), 0);
 
-    const items = list
-        .map(project => ({ project, photos: projectPhotos(project) }))
-        .filter(item => item.photos.length > 0)
-        .slice(0, 3);
+    const items = [];
+    for (let round = 0; round < longest && items.length < WORKS_MAX; round++) {
+        galleries.forEach(({ project, photos }) => {
+            if (items.length < WORKS_MAX && photos[round]) {
+                items.push({ project, src: photos[round], first: round === 0 });
+            }
+        });
+    }
 
     if (!items.length) {
         if (section) section.style.display = "none";
@@ -390,18 +401,18 @@ function renderWorks(lang) {
 
     if (section) section.style.display = "";
 
-    grid.innerHTML = items.map(({ project, photos }) => {
+    grid.innerHTML = items.map(({ project, src, first }) => {
 
-        const tag = escapeHTML((project.tag && (project.tag[lang] || project.tag.he)) || "");
-        const title = escapeHTML((project.title && (project.title[lang] || project.title.he)) || "");
+        const tag = first ? escapeHTML((project.tag && (project.tag[lang] || project.tag.he)) || "") : "";
+        const title = first ? escapeHTML((project.title && (project.title[lang] || project.title.he)) || "") : "";
+        const info = (tag || title)
+            ? `<div class="work-info">${tag ? `<span>${tag}</span>` : ""}${title ? `<h3>${title}</h3>` : ""}</div>`
+            : "";
 
         return `
-            <a class="work-card" href="#projects">
-                <div class="work-image" data-src="${escapeHTML(photos[0])}"></div>
-                <div class="work-info">
-                    <span>${tag}</span>
-                    <h3>${title}</h3>
-                </div>
+            <a class="work-card" href="#projects" aria-label="${title || tag || escapeHTML(lang === "en" ? "Project" : "פרויקט")}">
+                <div class="work-image" data-src="${escapeHTML(src)}"></div>
+                ${info}
             </a>
         `;
 
@@ -601,6 +612,12 @@ function testimonialsFromCSV(text) {
     const header = rows[0].map(h => h.trim().toLowerCase());
     const approvedIdx = header.indexOf("approved") !== -1 ? header.indexOf("approved") : 4;
 
+    /* Optional "city" question (e.g. "עיר" / "מאיפה אתם?") — found by
+       its header text, since a newly added form question can land in
+       any column. Missing column = no city shown. */
+    const cityIdx = header.findIndex((h, i) =>
+        i > 3 && i !== approvedIdx && /(עיר|מאיפה|מקום מגורים|city|location)/i.test(h));
+
     const list = [];
     for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
@@ -617,7 +634,9 @@ function testimonialsFromCSV(text) {
         if (!Number.isFinite(rating)) rating = 0;
         rating = Math.max(0, Math.min(5, rating));
 
-        list.push({ name, text, rating });
+        const city = cityIdx !== -1 ? (row[cityIdx] || "").trim() : "";
+
+        list.push({ name, text, rating, city });
     }
     return list;
 
@@ -672,6 +691,7 @@ function renderTestimonials() {
                 ${t.rating ? `<div class="testimonial-stars">${stars}</div>` : ""}
                 <p class="testimonial-text">${escapeHTML(t.text)}</p>
                 <strong class="testimonial-name">${escapeHTML(t.name)}</strong>
+                ${t.city ? `<span class="testimonial-city">${escapeHTML(t.city)}</span>` : ""}
             </div>
         `;
     }).join("");
@@ -848,7 +868,7 @@ const translations = {
         en: 'Your home.<br>Exactly as <span>you imagined it.</span>'
     },
     "hero.text": {
-        en: "Bespoke planning and interior design, from the first idea to the smallest detail."
+        en: "Bespoke planning and interior design with full guidance down to the smallest detail — and peace of mind, even when you live abroad."
     },
     "hero.cta1": { en: "View Projects" },
     "hero.cta2": { en: "Let's Talk" },

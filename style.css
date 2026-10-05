@@ -27,7 +27,7 @@
        so headings look identical in both languages (unlike Latin-only
        serifs such as Cormorant/Playfair, which drop to a system font
        for Hebrew and break the luxury look). */
-    --font-display: "Frank Ruhl Libre", "Georgia", serif;
+    --font-display: "Bellefair", "Frank Ruhl Libre", "Georgia", serif;
     --font-body: "Rubik", "Assistant", "Heebo", sans-serif;
 
     --container: 1280px;
@@ -61,6 +61,10 @@ body {
 h1, h2, h3,
 .about-badge strong {
     font-family: var(--font-display);
+    /* Bellefair ships one weight only — never let the browser fake a
+       bold version, which smears its fine hairline strokes. */
+    font-weight: 400;
+    font-synthesis: none;
 }
 
 body.menu-open {
@@ -504,12 +508,12 @@ img {
     color: var(--bronze-dark);
 
     font-size: clamp(
-        50px,
-        5.2vw,
-        78px
+        54px,
+        5.8vw,
+        86px
     );
 
-    font-weight: 500;
+    font-weight: 400;
 
     line-height: 1.08;
 
@@ -1294,12 +1298,14 @@ img {
 .works-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 18px;
 }
 
 .work-card {
+    position: relative;
     display: block;
     overflow: hidden;
+    background: var(--cream-dark);
 }
 
 .work-image {
@@ -1307,35 +1313,38 @@ img {
     background-color: var(--cream-dark);
     background-size: cover;
     background-position: center;
-    transition: transform 0.7s ease;
+    transition: transform 0.8s ease;
 }
 
 .work-card:hover .work-image {
-    transform: scale(1.04);
+    transform: scale(1.045);
 }
 
-.work-card {
-    position: relative;
-}
-
+/* Caption sits over the photo on a soft gradient, only on the first
+   photo of each project. */
 .work-info {
-    padding: 16px 2px 0;
-    background: var(--cream);
-    position: relative;
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 46px 22px 18px;
+    background: linear-gradient(to top, rgba(33, 28, 20, 0.62), rgba(33, 28, 20, 0));
+    color: var(--white);
+    pointer-events: none;
 }
 
 .work-info span {
-    color: var(--bronze);
+    display: block;
+    color: var(--bronze-soft);
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 2px;
 }
 
 .work-info h3 {
-    margin-top: 4px;
-    color: var(--text);
-    font-size: 22px;
-    font-weight: 500;
+    margin-top: 2px;
+    color: var(--white);
+    font-size: 26px;
+    line-height: 1.2;
 }
 
 @media (max-width: 768px) {
@@ -1350,12 +1359,21 @@ img {
     }
 
     .works-grid {
-        grid-template-columns: 1fr;
-        gap: 28px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
-    .work-image {
-        aspect-ratio: 4 / 3;
+    .work-info {
+        padding: 30px 12px 10px;
+    }
+
+    .work-info span {
+        font-size: 10px;
+        letter-spacing: 1.2px;
+    }
+
+    .work-info h3 {
+        font-size: 18px;
     }
 }
 
@@ -1416,9 +1434,18 @@ img {
 }
 
 .testimonial-name {
+    display: block;
     color: var(--bronze-dark);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
+}
+
+.testimonial-city {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.5px;
 }
 
 @media (max-width: 768px) {
