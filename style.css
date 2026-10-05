@@ -239,6 +239,145 @@ img {
 
 
 /* =========================================================
+   INSTAGRAM (header icon, mobile menu, works, contact)
+========================================================= */
+
+.header-instagram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    margin-inline-end: -23px; /* sits close to WhatsApp, not a full header gap */
+
+    border: 1px solid var(--bronze);
+
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.header-instagram img {
+    width: 22px;
+    height: 22px;
+}
+
+.header-instagram:hover {
+    background: var(--cream-dark);
+    transform: translateY(-1px);
+}
+
+.mobile-instagram {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 10px;
+    padding: 12px 20px !important;
+
+    border: 1px solid var(--bronze) !important;
+    color: var(--bronze-dark);
+    font-size: 16px !important;
+}
+
+.mobile-instagram img {
+    width: 22px;
+    height: 22px;
+}
+
+.works-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.works-instagram {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 18px;
+
+    border: 1px solid var(--bronze);
+    color: var(--bronze-dark);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: background 0.25s ease;
+}
+
+.works-instagram img {
+    width: 20px;
+    height: 20px;
+}
+
+.works-instagram:hover {
+    background: var(--cream-dark);
+}
+
+.contact-instagram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    margin-inline-start: 12px;
+    padding: 0 26px;
+    min-width: 245px;
+    height: 58px;
+    vertical-align: middle;
+
+    background: var(--cream);
+    border: 1px solid var(--cream);
+    color: var(--bronze-dark);
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.contact-instagram img {
+    width: 24px;
+    height: 24px;
+}
+
+.contact-instagram strong {
+    font-weight: 600;
+}
+
+.contact-instagram:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1000px) {
+    .header-instagram {
+        margin-inline-end: 0;
+        margin-inline-start: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .works-links {
+        flex-wrap: wrap;
+        gap: 14px 22px;
+    }
+
+    .contact-instagram {
+        margin-inline-start: 0;
+        margin-top: 16px;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 14px 22px;
+        row-gap: 2px;
+    }
+}
+
+
+/* =========================================================
    HEADER WHATSAPP
 ========================================================= */
 
@@ -1832,10 +1971,10 @@ img {
     align-items: center;
     justify-content: center;
 
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
 
-    opacity: 0.8;
+    opacity: 1;
 
     transition:
         opacity 0.25s ease,

@@ -366,7 +366,7 @@ function initGalleryAutoplay() {
 /* "קצת מהעבודות שלי": up to 6 real photos on the home page. Photos
    are taken round-robin (1st photo of every project, then 2nd of
    every project, ...) so every project is represented before any one
-   repeats. A project's tag/title is shown only on its first photo.
+   repeats. Photos only, no captions.
    Same safety rules as the carousel — text through escapeHTML, photo
    URLs through isSafeImageURL (inside projectPhotos), and the URL is
    applied via the style property, never built into markup. */
@@ -401,25 +401,24 @@ function renderWorks(lang) {
 
     if (section) section.style.display = "";
 
-    grid.innerHTML = items.map(({ project, src, first }) => {
+    /* Photos only — no tag/title captions on this home-page preview. */
+    grid.innerHTML = items.map(({ project }) => {
 
-        const tag = first ? escapeHTML((project.tag && (project.tag[lang] || project.tag.he)) || "") : "";
-        const title = first ? escapeHTML((project.title && (project.title[lang] || project.title.he)) || "") : "";
-        const info = (tag || title)
-            ? `<div class="work-info">${tag ? `<span>${tag}</span>` : ""}${title ? `<h3>${title}</h3>` : ""}</div>`
-            : "";
+        const label = escapeHTML((project.title && (project.title[lang] || project.title.he))
+            || (project.tag && (project.tag[lang] || project.tag.he))
+            || (lang === "en" ? "Project" : "פרויקט"));
 
         return `
-            <a class="work-card" href="#projects" aria-label="${title || tag || escapeHTML(lang === "en" ? "Project" : "פרויקט")}">
-                <div class="work-image" data-src="${escapeHTML(src)}"></div>
-                ${info}
+            <a class="work-card" href="#projects" aria-label="${label}">
+                <div class="work-image"></div>
             </a>
         `;
 
     }).join("");
 
-    grid.querySelectorAll(".work-image[data-src]").forEach(el => {
-        el.style.backgroundImage = `url("${el.dataset.src}")`;
+    /* Photo URLs are applied via the style property only. */
+    grid.querySelectorAll(".work-image").forEach((el, i) => {
+        el.style.backgroundImage = `url("${items[i].src}")`;
     });
 
 }
@@ -875,6 +874,7 @@ const translations = {
 
     "works.title": { en: "A Little of My Work" },
     "works.link": { en: "All projects" },
+    "works.instagram": { en: "More work on Instagram" },
 
     "intro.label": { en: "01 / About Us" },
     "intro.title": {
@@ -954,6 +954,7 @@ const translations = {
     },
     "contact.cta": { en: "Let's Talk on WhatsApp" },
     "contact.email.label": { en: "Or email me at:" },
+    "contact.instagram": { en: "Follow me on Instagram" },
 
     "footer.tagline": { en: "Interior Design · Planning · Guidance" },
    "footer.rights": { en: "All rights reserved" },
