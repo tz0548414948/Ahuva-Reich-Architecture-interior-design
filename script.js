@@ -363,6 +363,56 @@ function initGalleryAutoplay() {
 
 }
 
+/* "קצת מהעבודות שלי": the first 3 projects, first photo of each.
+   Same safety rules as the carousel — text through escapeHTML, photo
+   URLs through isSafeImageURL, and the URL is applied via the style
+   property (data-src is read back), never built into markup. */
+function renderWorks(lang) {
+
+    const grid = document.getElementById("works-grid");
+
+    if (!grid) {
+        return;
+    }
+
+    const section = grid.closest(".works");
+    const list = Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : [];
+
+    const items = list
+        .map(project => ({ project, photos: projectPhotos(project) }))
+        .filter(item => item.photos.length > 0)
+        .slice(0, 3);
+
+    if (!items.length) {
+        if (section) section.style.display = "none";
+        return;
+    }
+
+    if (section) section.style.display = "";
+
+    grid.innerHTML = items.map(({ project, photos }) => {
+
+        const tag = escapeHTML((project.tag && (project.tag[lang] || project.tag.he)) || "");
+        const title = escapeHTML((project.title && (project.title[lang] || project.title.he)) || "");
+
+        return `
+            <a class="work-card" href="#projects">
+                <div class="work-image" data-src="${escapeHTML(photos[0])}"></div>
+                <div class="work-info">
+                    <span>${tag}</span>
+                    <h3>${title}</h3>
+                </div>
+            </a>
+        `;
+
+    }).join("");
+
+    grid.querySelectorAll(".work-image[data-src]").forEach(el => {
+        el.style.backgroundImage = `url("${el.dataset.src}")`;
+    });
+
+}
+
 function renderProjects(lang) {
 
     if (!projectsTrack || !Array.isArray(window.PROJECTS_DATA)) {
@@ -380,6 +430,7 @@ function renderProjects(lang) {
 
     applyProjectImages();
     initGalleryAutoplay();
+    renderWorks(lang);
 
     if (carouselDots) {
 
@@ -617,8 +668,9 @@ function renderTestimonials() {
         const stars = "★".repeat(t.rating) + "☆".repeat(5 - t.rating);
         return `
             <div class="testimonial-card">
+                <span class="testimonial-mark" aria-hidden="true">“</span>
                 ${t.rating ? `<div class="testimonial-stars">${stars}</div>` : ""}
-                <p class="testimonial-text">"${escapeHTML(t.text)}"</p>
+                <p class="testimonial-text">${escapeHTML(t.text)}</p>
                 <strong class="testimonial-name">${escapeHTML(t.name)}</strong>
             </div>
         `;
@@ -801,6 +853,9 @@ const translations = {
     "hero.cta1": { en: "View Projects" },
     "hero.cta2": { en: "Let's Talk" },
 
+    "works.title": { en: "A Little of My Work" },
+    "works.link": { en: "All projects" },
+
     "intro.label": { en: "01 / About Us" },
     "intro.title": {
         en: 'Design born <em>from real life.</em>'
@@ -839,10 +894,13 @@ const translations = {
         en: 'Precise planning.<br>Design with character.'
     },
     "about.text1": {
-        en: "I'm Ahuva Reich, an architect and interior designer specializing in planning and designing private homes and apartments."
+        en: "I'm Ahuva Reich, an architect and interior designer with extensive experience planning and designing private homes and apartments."
     },
     "about.text2": {
-        en: "My process starts with listening. I believe good design shouldn't just look beautiful — it should work for you, every single day."
+        en: "I guide every project from the first idea to the final key, especially for clients who live abroad: you don't need to be here for your home to be built right. I manage the process with the contractors and with you, so you can feel at ease every step of the way."
+    },
+    "about.text3": {
+        en: "For every client I develop a personal design language — one that reflects you, not a passing trend. Good design shouldn't just look beautiful — it should work for you, every single day."
     },
     "about.d1.label": { en: "Service Area" },
     "about.d1.value": { en: "Jerusalem & Central Israel" },

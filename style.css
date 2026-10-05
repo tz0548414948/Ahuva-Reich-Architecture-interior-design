@@ -28,7 +28,7 @@
        serifs such as Cormorant/Playfair, which drop to a system font
        for Hebrew and break the luxury look). */
     --font-display: "Frank Ruhl Libre", "Georgia", serif;
-    --font-body: "Assistant", "Heebo", sans-serif;
+    --font-body: "Rubik", "Assistant", "Heebo", sans-serif;
 
     --container: 1280px;
     --header-height: 88px;
@@ -1268,11 +1268,112 @@ img {
 }
 
 /* =========================================================
+   WORKS — "קצת מהעבודות שלי"
+========================================================= */
+
+.works {
+    padding: 90px 0;
+    background: var(--cream);
+}
+
+.works-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.works-heading h2 {
+    color: var(--text);
+    font-size: clamp(30px, 3.4vw, 46px);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.work-card {
+    display: block;
+    overflow: hidden;
+}
+
+.work-image {
+    aspect-ratio: 1 / 1;
+    background-color: var(--cream-dark);
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.7s ease;
+}
+
+.work-card:hover .work-image {
+    transform: scale(1.04);
+}
+
+.work-card {
+    position: relative;
+}
+
+.work-info {
+    padding: 16px 2px 0;
+    background: var(--cream);
+    position: relative;
+}
+
+.work-info span {
+    color: var(--bronze);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.work-info h3 {
+    margin-top: 4px;
+    color: var(--text);
+    font-size: 22px;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .works {
+        padding: 60px 0;
+    }
+
+    .works-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .works-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .work-image {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+
+/* =========================================================
    TESTIMONIALS
 ========================================================= */
 
 .testimonials {
-    background: var(--cream-soft);
+    background: #3A2A1B;
+}
+
+.testimonials .section-label {
+    color: var(--bronze-soft);
+}
+
+.testimonials .section-heading-content h2 {
+    color: var(--cream);
 }
 
 .testimonials-grid {
@@ -1282,9 +1383,22 @@ img {
 }
 
 .testimonial-card {
-    padding: 40px 32px;
+    position: relative;
+    padding: 64px 32px 36px;
     background: var(--white);
     border: 1px solid var(--border);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.testimonial-mark {
+    position: absolute;
+    top: 6px;
+    inset-inline-start: 26px;
+    color: var(--bronze-light);
+    font-family: var(--font-display);
+    font-size: 84px;
+    line-height: 1;
+    pointer-events: none;
 }
 
 .testimonial-stars {
@@ -1296,7 +1410,7 @@ img {
 
 .testimonial-text {
     margin-bottom: 22px;
-    color: var(--muted);
+    color: var(--text);
     font-size: 16px;
     line-height: 1.8;
 }
