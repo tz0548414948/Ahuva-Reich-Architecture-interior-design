@@ -230,6 +230,26 @@ function projectPhotos(project) {
 
 }
 
+/* Descriptive alt text so Google Images can index the project photos.
+   Built from the project's own title/tag; escaped where it is used. */
+function projectAlt(project, lang, n, total) {
+
+    const base = (project.title && (project.title[lang] || project.title.he))
+        || (project.tag && (project.tag[lang] || project.tag.he))
+        || "";
+
+    const suffix = lang === "en"
+        ? "interior design & architecture by Ahuva Reich"
+        : "עיצוב פנים ואדריכלות, אהובה רייך";
+
+    const count = total > 1
+        ? (lang === "en" ? ` (photo ${n} of ${total})` : ` (תמונה ${n} מתוך ${total})`)
+        : "";
+
+    return `${base ? base + " — " : ""}${suffix}${count}`;
+
+}
+
 function projectCardHTML(project, lang) {
 
     const tag = escapeHTML(project.tag[lang] || project.tag.he || "");
@@ -237,7 +257,7 @@ function projectCardHTML(project, lang) {
     const photos = projectPhotos(project);
 
     const photosHTML = photos
-        .map((src, i) => `<div class="project-image${i === 0 ? " active" : ""}" data-src="${escapeHTML(src)}" data-photo-index="${i}"></div>`)
+        .map((src, i) => `<img class="project-image${i === 0 ? " active" : ""}" data-src="${escapeHTML(src)}" data-photo-index="${i}" alt="${escapeHTML(projectAlt(project, lang, i + 1, photos.length))}" loading="lazy" decoding="async">`)
         .join("");
 
     const galleryControls = photos.length > 1
@@ -269,7 +289,8 @@ function projectCardHTML(project, lang) {
 function applyProjectImages() {
 
     projectsTrack.querySelectorAll(".project-image[data-src]").forEach(el => {
-        el.style.backgroundImage = `url("${el.dataset.src}")`;
+        /* Set through the DOM property, never written into markup. */
+        el.src = el.dataset.src;
     });
 
 }
@@ -401,24 +422,27 @@ function renderWorks(lang) {
 
     if (section) section.style.display = "";
 
-    /* Photos only — no tag/title captions on this home-page preview. */
-    grid.innerHTML = items.map(({ project }) => {
+    /* Photos only — no visible captions; the description lives in alt
+       text (for Google Images and screen readers). */
+    const totals = new Map(galleries.map(g => [g.project, g.photos.length]));
 
-        const label = escapeHTML((project.title && (project.title[lang] || project.title.he))
-            || (project.tag && (project.tag[lang] || project.tag.he))
-            || (lang === "en" ? "Project" : "פרויקט"));
+    grid.innerHTML = items.map(({ project, src }) => {
+
+        const n = (galleries.find(g => g.project === project).photos.indexOf(src)) + 1;
+        const alt = escapeHTML(projectAlt(project, lang, n, totals.get(project)));
 
         return `
-            <a class="work-card" href="#projects" aria-label="${label}">
-                <div class="work-image"></div>
+            <a class="work-card" href="#projects">
+                <img class="work-image" alt="${alt}" loading="lazy" decoding="async">
             </a>
         `;
 
     }).join("");
 
-    /* Photo URLs are applied via the style property only. */
+    /* Photo URLs (already filtered by isSafeImageURL) are set through the
+       DOM property only. */
     grid.querySelectorAll(".work-image").forEach((el, i) => {
-        el.style.backgroundImage = `url("${items[i].src}")`;
+        el.src = items[i].src;
     });
 
 }

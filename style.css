@@ -569,6 +569,11 @@ img {
     position: absolute;
     inset: 0;
 
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
     background-image:
         url("images/image1.jpg");
 
@@ -956,9 +961,10 @@ img {
 .image-frame {
     position: absolute;
     inset: 0;
-    background-image: url("images/image2.jpg");
-    background-size: cover;
-    background-position: center;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .about-image::before {
@@ -1201,8 +1207,10 @@ img {
     position: absolute;
     inset: 0;
 
-    background-size: cover;
-    background-position: center;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 
     opacity: 0;
 
@@ -1448,10 +1456,11 @@ img {
 }
 
 .work-image {
+    display: block;
+    width: 100%;
     aspect-ratio: 1 / 1;
+    object-fit: cover;
     background-color: var(--cream-dark);
-    background-size: cover;
-    background-position: center;
     transition: transform 0.8s ease;
 }
 
