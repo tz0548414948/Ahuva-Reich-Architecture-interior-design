@@ -2511,3 +2511,16 @@ img {
         animation-duration: 0.01ms !important;
     }
 }
+
+
+/* =========================================================
+   ENGLISH PAGE (en/index.html, dir="ltr")
+   A few blocks above are locked to RTL for the Hebrew layout;
+   flip them for the English page.
+========================================================= */
+
+html[dir="ltr"] .hero-content,
+html[dir="ltr"] .project-info {
+    direction: ltr;
+    text-align: left;
+}
