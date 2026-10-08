@@ -1574,6 +1574,13 @@ img {
     letter-spacing: 2px;
 }
 
+.testimonial-text,
+.testimonial-name,
+.testimonial-city {
+    /* a long link or word in a review must never widen the page */
+    overflow-wrap: anywhere;
+}
+
 .testimonial-text {
     margin-bottom: 22px;
     color: var(--text);
@@ -2415,23 +2422,42 @@ img {
     }
 
 
-    /* Projects */
+    /* Projects — on phones: smaller cards with the next one peeking
+       in from the side (so it's obvious you can swipe), photo height
+       tied to the card width, and swipe instead of arrow buttons. */
+
+    .projects-track {
+        gap: 12px;
+        scroll-padding-inline: 4px;
+    }
 
     .project {
-        width: 84vw;
+        width: 68vw;
     }
 
     .project-images {
-        height: 340px;
+        height: auto;
+        aspect-ratio: 4 / 5;
+    }
+
+    .project-info {
+        padding-top: 12px;
+    }
+
+    .project-info span {
+        font-size: 10px;
+    }
+
+    .project-info h3 {
+        font-size: 20px;
+    }
+
+    .photo-nav {
+        display: none;
     }
 
     .carousel-nav {
-        top: 150px;
-
-        width: 40px;
-        height: 40px;
-
-        font-size: 16px;
+        display: none;
     }
 
     .carousel-prev {
