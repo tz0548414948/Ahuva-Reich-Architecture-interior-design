@@ -395,6 +395,48 @@ function initGalleryAutoplay() {
    applied via the style property, never built into markup. */
 const WORKS_MAX = 6;
 
+/* Reveal animation for the top photos: when the grid scrolls into
+   view each photo opens upward like a curtain while settling from a
+   slight zoom, one after another. Without JS (or with reduced motion)
+   the photos are simply shown. */
+let worksObserver = null;
+
+function revealWorks(grid) {
+
+    const cards = grid.querySelectorAll(".work-card");
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduce || !("IntersectionObserver" in window)) {
+        return;
+    }
+
+    grid.classList.add("reveal-ready");
+    cards.forEach((card, i) => {
+        card.style.setProperty("--reveal-delay", `${i * 0.14}s`);
+        card.addEventListener("transitionend", e => {
+            if (e.propertyName === "clip-path") card.classList.add("is-settled");
+        });
+    });
+
+    if (worksObserver) worksObserver.disconnect();
+
+    /* Already revealed once (e.g. language re-render)? show at once. */
+    if (grid.dataset.revealed === "1") {
+        cards.forEach(card => card.classList.add("is-in", "is-settled"));
+        return;
+    }
+
+    worksObserver = new IntersectionObserver(entries => {
+        if (!entries.some(e => e.isIntersecting)) return;
+        grid.dataset.revealed = "1";
+        cards.forEach(card => card.classList.add("is-in"));
+        worksObserver.disconnect();
+    }, { threshold: 0.2 });
+
+    worksObserver.observe(grid);
+
+}
+
 function renderWorks(lang) {
 
     const grid = document.getElementById("works-grid");
@@ -463,6 +505,8 @@ function renderWorks(lang) {
     grid.querySelectorAll(".work-image").forEach((el, i) => {
         el.src = items[i].src;
     });
+
+    revealWorks(grid);
 
 }
 
@@ -723,6 +767,16 @@ async function loadTestimonialsFromSheet() {
 
 }
 
+/* =========================================================
+   TESTIMONIALS — one large quote at a time (slider)
+
+   All text comes from the public Google Form/Sheet, so every value
+   goes through escapeHTML. dir="auto" lets an English review sit
+   left-to-right inside the Hebrew page (punctuation stays correct).
+========================================================= */
+
+let testimonialTimer = null;
+
 function renderTestimonials() {
 
     const grid = document.getElementById("testimonialsGrid");
@@ -731,26 +785,115 @@ function renderTestimonials() {
     const section = grid.closest(".testimonials");
     const list = window.TESTIMONIALS_DATA || [];
 
+    if (testimonialTimer) {
+        clearInterval(testimonialTimer);
+        testimonialTimer = null;
+    }
+
     if (!list.length) {
         if (section) section.style.display = "none";
         return;
     }
     if (section) section.style.display = "";
 
-    grid.innerHTML = list.map(t => {
-        const stars = "★".repeat(t.rating) + "☆".repeat(5 - t.rating);
+    const isEn = document.documentElement.getAttribute("lang") === "en";
+    const labels = isEn
+        ? { prev: "Previous review", next: "Next review", go: "Review" }
+        : { prev: "ההמלצה הקודמת", next: "ההמלצה הבאה", go: "המלצה" };
+
+    const slides = list.map((t, i) => {
+        const rating = Math.max(0, Math.min(5, Number(t.rating) || 0));
+        const stars = rating
+            ? `<div class="t-stars" aria-label="${rating}/5">${"★".repeat(rating)}<span>${"★".repeat(5 - rating)}</span></div>`
+            : "";
+        const long = String(t.text || "").length > 260 ? " is-long" : "";
         return `
-            <div class="testimonial-card">
-                <span class="testimonial-mark" aria-hidden="true">“</span>
-                ${t.rating ? `<div class="testimonial-stars">${stars}</div>` : ""}
-                <p class="testimonial-text">${escapeHTML(t.text)}</p>
-                <strong class="testimonial-name">${escapeHTML(t.name)}</strong>
-                ${t.city ? `<span class="testimonial-city">${escapeHTML(t.city)}</span>` : ""}
-            </div>
+            <figure class="t-slide${i === 0 ? " is-active" : ""}" aria-hidden="${i === 0 ? "false" : "true"}">
+                <span class="t-mark" aria-hidden="true">“</span>
+                ${stars}
+                <blockquote class="t-text${long}" dir="auto">${escapeHTML(t.text)}</blockquote>
+                <figcaption class="t-author">
+                    <span class="t-line" aria-hidden="true"></span>
+                    <strong class="t-name" dir="auto">${escapeHTML(t.name)}</strong>
+                    ${t.city ? `<span class="t-city" dir="auto">${escapeHTML(t.city)}</span>` : ""}
+                </figcaption>
+            </figure>
         `;
     }).join("");
 
+    const controls = list.length > 1 ? `
+        <div class="t-controls">
+            <button type="button" class="t-nav t-prev" aria-label="${labels.prev}">${isEn ? "←" : "→"}</button>
+            <div class="t-dots">
+                ${list.map((_, i) => `<button type="button" class="t-dot${i === 0 ? " is-active" : ""}" data-index="${i}" aria-label="${labels.go} ${i + 1}"></button>`).join("")}
+            </div>
+            <button type="button" class="t-nav t-next" aria-label="${labels.next}">${isEn ? "→" : "←"}</button>
+        </div>
+    ` : "";
+
+    grid.innerHTML = `
+        <div class="t-slider" aria-roledescription="carousel">
+            <div class="t-card"><div class="t-stage">${slides}</div></div>
+            ${controls}
+        </div>
+    `;
+
+    if (list.length > 1) {
+        initTestimonialSlider(grid.querySelector(".t-slider"), list.length);
+    }
+
 }
+
+function initTestimonialSlider(slider, count) {
+
+    const slides = slider.querySelectorAll(".t-slide");
+    const dots = slider.querySelectorAll(".t-dot");
+    let index = 0;
+
+    const show = i => {
+        index = (i + count) % count;
+        slides.forEach((el, n) => {
+            el.classList.toggle("is-active", n === index);
+            el.setAttribute("aria-hidden", n === index ? "false" : "true");
+        });
+        dots.forEach((el, n) => el.classList.toggle("is-active", n === index));
+    };
+
+    /* In RTL "next" sits on the left; the arrows are placed so that the
+       left arrow always moves forward, matching reading direction. */
+    slider.querySelector(".t-next").addEventListener("click", () => { show(index + 1); restart(); });
+    slider.querySelector(".t-prev").addEventListener("click", () => { show(index - 1); restart(); });
+    dots.forEach(dot => dot.addEventListener("click", () => { show(Number(dot.dataset.index)); restart(); }));
+
+    /* swipe on phones */
+    let startX = null;
+    slider.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener("touchend", e => {
+        if (startX === null) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        startX = null;
+        if (Math.abs(dx) < 40) return;
+        const rtl = document.documentElement.getAttribute("dir") !== "ltr";
+        show(index + ((dx > 0) === rtl ? 1 : -1));
+        restart();
+    }, { passive: true });
+
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const start = () => {
+        if (reduce || testimonialTimer) return;
+        testimonialTimer = setInterval(() => show(index + 1), 8000);
+    };
+    const stop = () => { clearInterval(testimonialTimer); testimonialTimer = null; };
+    function restart() { stop(); start(); }
+
+    slider.addEventListener("mouseenter", stop);
+    slider.addEventListener("mouseleave", start);
+    slider.addEventListener("focusin", stop);
+    slider.addEventListener("focusout", start);
+    start();
+
+}
+
 
 function getCardStep() {
 
