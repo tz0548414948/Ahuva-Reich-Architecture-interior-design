@@ -25,6 +25,20 @@ import vm from "node:vm";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://ahuvareichdesign.com";
 
+/* ---------- cache-busting: stamp ?v=<content hash> on our own CSS/JS
+   in index.html so browsers fetch a new version right after an update
+   instead of using a copy saved for up to 10 minutes. ---------- */
+import { createHash } from "node:crypto";
+{
+    const indexPath = join(ROOT, "index.html");
+    let index = readFileSync(indexPath, "utf8");
+    for (const file of ["style.css", "script.js", "projects-data.js"]) {
+        const hash = createHash("sha1").update(readFileSync(join(ROOT, file))).digest("hex").slice(0, 8);
+        index = index.replace(new RegExp(`((?:href|src)=")${file.replace(".", "\\.")}(\\?v=[0-9a-f]*)?(")`, "g"), `$1${file}?v=${hash}$3`);
+    }
+    writeFileSync(indexPath, index);
+}
+
 let html = readFileSync(join(ROOT, "index.html"), "utf8");
 const js = readFileSync(join(ROOT, "script.js"), "utf8");
 
