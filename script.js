@@ -720,6 +720,11 @@ function testimonialsFromCSV(text) {
        =GOOGLETRANSLATE(...): "text_he" and "text_en". */
     const textHeIdx = header.indexOf("text_he");
     const textEnIdx = header.indexOf("text_en");
+
+    /* Optional manual corrections, typed by hand: "fix_he" / "fix_en".
+       When filled they win over the automatic translation. */
+    const fixHeIdx = header.indexOf("fix_he");
+    const fixEnIdx = header.indexOf("fix_en");
     const translation = idx => {
         if (idx === -1) return "";
         const v = String(row[idx] || "").trim();
@@ -750,7 +755,7 @@ function testimonialsFromCSV(text) {
 
         const city = cityIdx !== -1 ? (row[cityIdx] || "").trim() : "";
 
-        list.push({ name, text, rating, city, textHe: translation(textHeIdx), textEn: translation(textEnIdx) });
+        list.push({ name, text, rating, city, textHe: translation(fixHeIdx) || translation(textHeIdx), textEn: translation(fixEnIdx) || translation(textEnIdx) });
     }
     return list;
 
