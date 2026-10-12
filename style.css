@@ -1586,13 +1586,13 @@ img {
 /* ---- slider: one large quote at a time ---- */
 
 .t-slider {
-    max-width: 880px;
+    max-width: 700px;
     margin-inline: auto;
 }
 
 .t-card {
     position: relative;
-    padding: 70px clamp(28px, 7vw, 90px) 54px;
+    padding: 44px clamp(26px, 5vw, 60px) 36px;
     background: var(--white);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.28);
 }
@@ -1601,7 +1601,7 @@ img {
     /* thin inner frame, like the about photo */
     content: "";
     position: absolute;
-    inset: 14px;
+    inset: 10px;
     border: 1px solid var(--border);
     pointer-events: none;
 }
@@ -1637,17 +1637,17 @@ img {
 
 .t-mark {
     display: block;
-    height: 46px;
+    height: 32px;
     color: var(--bronze-light);
     font-family: var(--font-display);
-    font-size: 96px;
+    font-size: 66px;
     line-height: 1;
 }
 
 .t-stars {
-    margin: 10px 0 22px;
+    margin: 6px 0 14px;
     color: var(--bronze);
-    font-size: 15px;
+    font-size: 13px;
     letter-spacing: 5px;
 }
 
@@ -1661,28 +1661,28 @@ img {
     max-width: 640px;
     color: var(--text);
     font-family: var(--font-display);
-    font-size: clamp(21px, 2.3vw, 28px);
+    font-size: clamp(18px, 1.8vw, 22px);
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
 
 .t-text.is-long {
-    font-size: clamp(18px, 1.8vw, 22px);
-    line-height: 1.75;
+    font-size: clamp(16px, 1.4vw, 18px);
+    line-height: 1.7;
 }
 
 .t-author {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    margin-top: 30px;
+    gap: 2px;
+    margin-top: 20px;
 }
 
 .t-line {
-    width: 40px;
+    width: 34px;
     height: 1px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     background: var(--bronze);
 }
 
@@ -1707,16 +1707,16 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 22px;
-    margin-top: 34px;
+    gap: 18px;
+    margin-top: 24px;
 }
 
 .t-nav {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 46px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     background: transparent;
     color: var(--cream);
@@ -1762,19 +1762,19 @@ img {
     }
 
     .t-card {
-        padding: 54px 26px 40px;
+        padding: 36px 22px 30px;
     }
 
     .t-card::before {
-        inset: 10px;
+        inset: 8px;
     }
 
     .t-text {
-        font-size: 20px;
+        font-size: 17px;
     }
 
     .t-text.is-long {
-        font-size: 17px;
+        font-size: 15px;
     }
 
     .t-controls {
