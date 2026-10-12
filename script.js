@@ -409,12 +409,29 @@ function renderWorks(lang) {
     const longest = galleries.reduce((max, g) => Math.max(max, g.photos.length), 0);
 
     const items = [];
-    for (let round = 0; round < longest && items.length < WORKS_MAX; round++) {
-        galleries.forEach(({ project, photos }) => {
-            if (items.length < WORKS_MAX && photos[round]) {
-                items.push({ project, src: photos[round], first: round === 0 });
-            }
+
+    /* If any row in the sheet has a value in the "home" column, show
+       exactly what was marked, in sheet order: "כן" = the row's first
+       photo, a number N = its first N photos. Otherwise fall back to the
+       automatic pick: 1st photo of every project, then 2nd, ... */
+    const marked = galleries.filter(g => g.project.home > 0 && g.photos.length);
+
+    if (marked.length) {
+        marked.forEach(({ project, photos }) => {
+            photos.slice(0, project.home).forEach((src, i) => {
+                if (items.length < WORKS_MAX) {
+                    items.push({ project, src, first: i === 0 });
+                }
+            });
         });
+    } else {
+        for (let round = 0; round < longest && items.length < WORKS_MAX; round++) {
+            galleries.forEach(({ project, photos }) => {
+                if (items.length < WORKS_MAX && photos[round]) {
+                    items.push({ project, src: photos[round], first: round === 0 });
+                }
+            });
+        }
     }
 
     if (!items.length) {
@@ -553,6 +570,14 @@ function parseCSV(text) {
 
 }
 
+/* "home" column value -> how many of the row's photos go to the top
+   section: "כן"/yes/v = 1, a number = that many, empty/other = 0. */
+function homeCount(value) {
+    const v = String(value || "").trim().toLowerCase();
+    if (/^\d+$/.test(v)) return Math.min(parseInt(v, 10), 6);
+    return ["כן", "yes", "y", "true", "v", "x", "✓", "✔"].includes(v) ? 1 : 0;
+}
+
 function projectsFromCSV(text) {
 
     const rows = parseCSV(text);
@@ -570,6 +595,9 @@ function projectsFromCSV(text) {
         tagEn: col("tag_en"),
         titleHe: col("title_he"),
         titleEn: col("title_en"),
+        /* Optional: mark a row "כן" in this column to put its first
+           photo in "קצת מהעבודות שלי" at the top of the home page. */
+        home: header.findIndex(h => h === "home" || h === "ראשי" || h === "עמוד ראשי"),
     };
 
     if (idx.image === -1 || idx.titleHe === -1) {
@@ -594,6 +622,7 @@ function projectsFromCSV(text) {
                 he: (r[idx.titleHe] || "").trim(),
                 en: (r[idx.titleEn] || "").trim(),
             },
+            home: idx.home !== -1 ? homeCount(r[idx.home]) : 0,
         }));
 
 }
