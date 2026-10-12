@@ -559,15 +559,6 @@ function renderProjects(lang) {
    array so nothing ever breaks.
 ========================================================= */
 
-/* Google serves a published sheet from a cache that can lag a few
-   minutes behind the sheet itself. A per-minute query parameter asks
-   for a fresh copy, so edits in the sheet show up on the site within
-   about a minute. */
-function freshSheetURL(url) {
-    const bucket = Math.floor(Date.now() / 60000);
-    return url + (url.includes("?") ? "&" : "?") + "_t=" + bucket;
-}
-
 function parseCSV(text) {
 
     const rows = [];
@@ -690,7 +681,7 @@ async function loadProjectsFromSheet() {
 
     try {
 
-        const response = await fetch(freshSheetURL(url), { cache: "no-store" });
+        const response = await fetch(url, { cache: "no-store" });
 
         if (!response.ok) {
             throw new Error("HTTP " + response.status);
@@ -733,7 +724,11 @@ function testimonialsFromCSV(text) {
         if (idx === -1) return "";
         const v = String(row[idx] || "").trim();
         /* ignore sheet placeholders/errors such as "Loading..." or "#VALUE!" */
-        return (!v || v.startsWith("#") || /^loading/i.test(v)) ? "" : v;
+        /* placeholders Google shows while a formula is still computing,
+           in any interface language ("Loading...", "מתבצעת טעינה..."). */
+        const pending = /^(loading|מתבצעת טעינה|טוען|cargando|chargement|wird geladen)/i.test(v)
+            || /^[^\s]{0,20}\.\.\.$/.test(v) && v.length < 25;
+        return (!v || v.startsWith("#") || pending) ? "" : v;
     };
     let row;
 
@@ -770,7 +765,7 @@ async function loadTestimonialsFromSheet() {
 
     try {
 
-        const response = await fetch(freshSheetURL(url), { cache: "no-store" });
+        const response = await fetch(url, { cache: "no-store" });
         if (!response.ok) {
             throw new Error("HTTP " + response.status);
         }
