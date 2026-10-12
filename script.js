@@ -716,9 +716,21 @@ function testimonialsFromCSV(text) {
     const cityIdx = header.findIndex((h, i) =>
         i > 3 && i !== approvedIdx && /(עיר|מאיפה|מקום מגורים|city|location)/i.test(h));
 
+    /* Optional auto-translation columns, filled in the sheet with
+       =GOOGLETRANSLATE(...): "text_he" and "text_en". */
+    const textHeIdx = header.indexOf("text_he");
+    const textEnIdx = header.indexOf("text_en");
+    const translation = idx => {
+        if (idx === -1) return "";
+        const v = String(row[idx] || "").trim();
+        /* ignore sheet placeholders/errors such as "Loading..." or "#VALUE!" */
+        return (!v || v.startsWith("#") || /^loading/i.test(v)) ? "" : v;
+    };
+    let row;
+
     const list = [];
     for (let i = 1; i < rows.length; i++) {
-        const row = rows[i];
+        row = rows[i];
         if (!row || row.every(cell => !cell || !cell.trim())) continue;
 
         const approvedRaw = (row[approvedIdx] || "").trim().toLowerCase();
@@ -734,7 +746,7 @@ function testimonialsFromCSV(text) {
 
         const city = cityIdx !== -1 ? (row[cityIdx] || "").trim() : "";
 
-        list.push({ name, text, rating, city });
+        list.push({ name, text, rating, city, textHe: translation(textHeIdx), textEn: translation(textEnIdx) });
     }
     return list;
 
@@ -798,20 +810,36 @@ function renderTestimonials() {
 
     const isEn = document.documentElement.getAttribute("lang") === "en";
     const labels = isEn
-        ? { prev: "Previous review", next: "Next review", go: "Review" }
-        : { prev: "ההמלצה הקודמת", next: "ההמלצה הבאה", go: "המלצה" };
+        ? { prev: "Previous review", next: "Next review", go: "Review",
+            translated: "Automatically translated", original: "Show original", back: "Show translation" }
+        : { prev: "ההמלצה הקודמת", next: "ההמלצה הבאה", go: "המלצה",
+            translated: "תורגם אוטומטית", original: "להצגת המקור", back: "להצגת התרגום" };
+
+    /* Show each review in the page's language when the sheet has an
+       automatic translation for it; keep the original one click away. */
+    const shown = list.map(t => {
+        const translatedText = isEn ? t.textEn : t.textHe;
+        const norm = v => String(v || "").replace(/\s+/g, " ").trim();
+        const isTranslated = !!translatedText && norm(translatedText) !== norm(t.text);
+        return { text: isTranslated ? translatedText : t.text, original: t.text, isTranslated };
+    });
 
     const slides = list.map((t, i) => {
         const rating = Math.max(0, Math.min(5, Number(t.rating) || 0));
         const stars = rating
             ? `<div class="t-stars" aria-label="${rating}/5">${"★".repeat(rating)}<span>${"★".repeat(5 - rating)}</span></div>`
             : "";
-        const long = String(t.text || "").length > 260 ? " is-long" : "";
+        const view = shown[i];
+        const long = String(view.text || "").length > 260 ? " is-long" : "";
+        const note = view.isTranslated
+            ? `<div class="t-translated">${labels.translated} · <button type="button" class="t-original" data-index="${i}">${labels.original}</button></div>`
+            : "";
         return `
             <figure class="t-slide${i === 0 ? " is-active" : ""}" aria-hidden="${i === 0 ? "false" : "true"}">
                 <span class="t-mark" aria-hidden="true">“</span>
                 ${stars}
-                <blockquote class="t-text${long}" dir="auto">${escapeHTML(t.text)}</blockquote>
+                <blockquote class="t-text${long}" dir="auto">${escapeHTML(view.text)}</blockquote>
+                ${note}
                 <figcaption class="t-author">
                     <span class="t-line" aria-hidden="true"></span>
                     <strong class="t-name" dir="auto">${escapeHTML(t.name)}</strong>
@@ -837,6 +865,19 @@ function renderTestimonials() {
             ${controls}
         </div>
     `;
+
+    /* "show original" / "show translation" toggle — swaps plain text
+       through textContent, never markup. */
+    grid.querySelectorAll(".t-original").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const i = Number(btn.dataset.index);
+            const quote = btn.closest(".t-slide").querySelector(".t-text");
+            const showingOriginal = btn.dataset.showing === "original";
+            quote.textContent = showingOriginal ? shown[i].text : shown[i].original;
+            btn.dataset.showing = showingOriginal ? "translation" : "original";
+            btn.textContent = showingOriginal ? labels.original : labels.back;
+        });
+    });
 
     if (list.length > 1) {
         initTestimonialSlider(grid.querySelector(".t-slider"), list.length);
@@ -938,6 +979,11 @@ function updateCarouselState() {
 
             carouselDots.querySelectorAll(".carousel-dot").forEach((dot, i) => {
                 dot.classList.toggle("active", i === activeIndex);
+            });
+
+            /* the card in focus — on phones the others shrink and fade */
+            projectsTrack.querySelectorAll(".project").forEach((card, i) => {
+                card.classList.toggle("is-current", i === activeIndex);
             });
 
         }
@@ -1193,3 +1239,65 @@ document.querySelectorAll("[data-lang-link]").forEach(link => {
         }
     });
 });
+
+
+/* =========================================================
+   PROJECTS CAROUSEL — motion on phones
+
+   On small screens the carousel invites a swipe: when it first
+   scrolls into view it gives a small "nudge", then it advances by
+   itself every few seconds. Any touch pauses it; it resumes after
+   the visitor leaves it alone for a while. Off on desktop and for
+   visitors who asked their device for reduced motion.
+========================================================= */
+
+(function initMobileCarouselMotion() {
+
+    if (!projectsTrack || !("IntersectionObserver" in window) || !window.matchMedia) {
+        return;
+    }
+
+    const mobile = window.matchMedia("(max-width: 768px)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const AUTOPLAY_MS = 4500;
+    const RESUME_AFTER_MS = 9000;
+
+    let visible = false;
+    let nudged = false;
+    let timer = null;
+    let pausedUntil = 0;
+
+    const active = () => mobile.matches && !reduce.matches;
+
+    function advance() {
+        if (!active() || !visible || Date.now() < pausedUntil || document.hidden) return;
+        const step = getCardStep();
+        if (step <= 0) return;
+        const maxScroll = projectsTrack.scrollWidth - projectsTrack.clientWidth;
+        const next = projectsTrack.scrollLeft + step;
+        projectsTrack.scrollTo({ left: next > maxScroll - 2 ? 0 : next, behavior: "smooth" });
+    }
+
+    function nudge() {
+        if (nudged || !active() || projectsTrack.scrollLeft > 2) return;
+        nudged = true;
+        projectsTrack.classList.add("is-nudging");
+        setTimeout(() => projectsTrack.classList.remove("is-nudging"), 1300);
+    }
+
+    const pause = () => { pausedUntil = Date.now() + RESUME_AFTER_MS; };
+    projectsTrack.addEventListener("touchstart", pause, { passive: true });
+    projectsTrack.addEventListener("pointerdown", pause, { passive: true });
+
+    new IntersectionObserver(entries => {
+        visible = entries.some(e => e.isIntersecting);
+        if (visible) {
+            setTimeout(nudge, 450);
+            if (!timer) timer = setInterval(advance, AUTOPLAY_MS);
+        } else if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+    }, { threshold: 0.55 }).observe(projectsTrack);
+
+})();
